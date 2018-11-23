@@ -62,9 +62,9 @@ class Tag extends Model implements Sortable
     {
         $locale = $locale ?? app()->getLocale();
 
+        //Edited here to support MariaDB
         return static::query()
-            ->where("name->{$locale}", $name)
-            ->where('type', $type)
+            ->whereRaw('JSON_CONTAINS(`name`, \'"'.$name.'"\', "$.'.$locale.'") AND type = "'.$type.'"')
             ->first();
     }
 
